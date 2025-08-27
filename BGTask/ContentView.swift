@@ -23,6 +23,7 @@ struct ContentView: View {
     func scheduleTask() {
         Log.info("Button pressed")
         let request = BGAppRefreshTaskRequest(identifier: "myapprefresh")
+        request.earliestBeginDate = Date().addingTimeInterval(60 * 5)
 
         do {
             try BGTaskScheduler.shared.submit(request)
