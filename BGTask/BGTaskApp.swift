@@ -10,12 +10,22 @@ import SwiftUI
 
 @main
 struct BGTaskApp: App {
+    @Environment(\.scenePhase) private var phase
+    let appModel = AppModel()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
+        .onChange(of: phase, { _, newValue in
+            if newValue == .background {
+                appModel.scheduleRefreshTask()
+            }
+        })
         .backgroundTask(.appRefresh("myapprefresh")) {
             Log.info("Background Task executed")
+
+            await appModel.scheduleRefreshTask()
         }
     }
 }
